@@ -18,15 +18,15 @@ last you a few weeks at best. (No promises!)
 
 Here are some stats:
 
-Idle power: ~0.06mA
+* Idle power: ~0.06mA
 
-Wake up (every 8 seconds or when motion is detected/button is pressed): ~50mA (approximate)
+* Wake up (every 8 seconds or when motion is detected/button is pressed): ~50mA (approximate)
 
-Wake-ups per hour: 450
+* Wake-ups per hour: 450
 
-Vcc: 5v (running at a lower voltage will reduce power consumption, but requires bypassing the regulator on the PIR sensor)
+* Vcc: 5v (running at a lower voltage will reduce power consumption, but requires bypassing the regulator on the PIR sensor)
 
-For more information about power usage, fuses, clock and pin connections check out the 
+For more information on fuses, power usage, clock, and pin connections check out the 
 [source](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino).
 
 ### Building on your breadboard
@@ -34,9 +34,16 @@ For more information about power usage, fuses, clock and pin connections check o
 To build your own TinyMotion, get all the parts from the parts list and hook everything
 up as like [this](https://github.com/davidk/TinyMotion/raw/master/breadboard.png).
 
-Be sure the set the PIR to 'L'. By default it is set to 'H'.
+Be sure the set the PIR's re-triggering (the jumper/shunt on the back) to 'L'. By default it is set to 'H'. It will 
+still work when set to 'H', so you may want to experiment with what works for you.
 
 For a wiring diagram, there is a crude schematic [here](https://github.com/davidk/TinyMotion/raw/master/schematic.png).
+
+### Making things permanent
+
+TinyMotion's parts will fit on a 1/4 sized Adafruit perma-proto (except for the PIR and XBee). Sizing is 1.7" (long) x 2" (high).
+[Here](https://github.com/davidk/TinyMotion/raw/master/board.png) is an image of how it looks when assembled. The trace
+between the LED and switch has been cut underneath the board.
 
 ### Parts list
 

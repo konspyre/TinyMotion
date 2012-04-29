@@ -1,29 +1,31 @@
 /*
- * TinyMotion - ATtiny85 + PIR + XBee + Lipoly battery + other stuff with a long run time
- * (In theory of course)
+ * TinyMotion
  * 
- * Fuses programmed for AVR:
+ * AVR: ATTiny85 (MFG P/N: ATTINY85-20PU)
+ *
+ * Fuses programmed for AVR (uses internal 8MHz clock source)
  * LFUSE = 0xE2 (Low Fuse)
  * HFUSE = 0xDF (High Fuse)
  * EFUSE = 0xFF (Extended Fuse)
  * 
- * Clock: Internal 8Mhz
  * Vcc: 5V from Adafruit MintyBoost connected to LiPoly battery
- * Attached hardware: PIR sensor (detection), XBee (notification), 3mm Green LED (notification), 
- * Push button (test)
+ * Attached hardware: PIR sensor (detection), XBee (notification), 3mm Green LED (notification), push button (test)
  * 
  * Run-time test calculations: http://oregonembedded.com/batterycalc.htm
  * Battery capacity: 1300mAh LiPoly battery
- * Current consumption duing sleep: 0.30mA
- * Current consumption during wakeup: 30mA
+ * Test condition: Hiding underneath a table with an EX330 multimeter in mA mode. (I also had a laptop.)
+ * Current consumption during sleep: 0.06mA (revised number from the breadboard version)
+ * Current consumption during wakeup: 50mA (full transmit power of XBee is around ~45mA)
  * Number of wakeups per hour: 450 (watchdog triggered every ~8 seconds, 7.5 triggers per minute, 450 triggers
  *  per hour) .. 60 [seconds/per minute] / 8 [1 trigger/every 8 seconds] = 7.5 [triggers/min]. 
  *               7.5 [triggers/minute] * 60 [minutes/hr] = 450 [triggers/hour].
- * Duration of wake: around 55.4ms
- * After 15% derating for self-discharge, 91.32 days or 0.25 years 
- * (3 months without accounting for motion sensed, DC conversion loss, subatomic physics, etc)
- * 
+ * Duration of wake: around 55.4ms (at max)
+ * After 15% derating for self-discharge, 113.45 days or 0.31 years.
+ * This does not account for constant motion triggering, DC conversion loss, subatomic physics, etc.
+ * If you have a lot of motion, hook this up to a (battery-backed) consistent power source.
+ *
  */
+ 
 #include <avr/sleep.h>
 #include <avr/power.h>
 #include <avr/wdt.h>
@@ -36,10 +38,10 @@
 SoftwareSerial xBeeComm(NULL, 3);  // None == RX, 3 == TX
 
 const uint8_t ledPin      = 0;     // choose the pin for the LED
-const uint8_t inputPin    = 2;     // choose the input pin (for PIR sensor)
 const uint8_t xBeeWakePin = 1;     // xbee wake up pin
                                    // configured with 'pin hibernate' (modem configuration 
                                    // -> sleep modes in X-CTU)
+const uint8_t pirPin    = 2;     // choose the input pin (for PIR sensor)
 const uint8_t switchPin   = 4;     // test switch (if the PIR is broken this can help check its state)
 bool wokenByDog = 0;               // state flag for watchdog timer wakeup
 
@@ -71,7 +73,7 @@ void setup() {
 
   xBeeComm.begin(9600);
   pinMode(ledPin, OUTPUT); 
-  pinMode(inputPin, INPUT);
+  pinMode(pirPin, INPUT);
   pinMode(xBeeWakePin, OUTPUT);
   pinMode(switchPin, INPUT);
 }
@@ -88,7 +90,7 @@ void loop() {
   }
   
   // PIR sensed something
-  if(digitalRead(inputPin) == HIGH) {
+  if(digitalRead(pirPin) == HIGH) {
     xBeeComm.print(CHIPID);
     xBeeComm.print(':');
     xBeeComm.println("ALARM");

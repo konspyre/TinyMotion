@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>TinyMotion by davidk</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="without-description">
+        <h1>TinyMotion</h1>
+        <p></p>
+        <p class="view"><a href="https://github.com/davidk/TinyMotion">View the Project on GitHub <small>davidk/TinyMotion</small></a></p>
+        <ul>
+          <li><a href="https://github.com/davidk/TinyMotion/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/davidk/TinyMotion/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/davidk/TinyMotion">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>TinyMotion</h1>
+
+<p>A battery powered, remote motion sensor.</p>
+
+<h3>Features</h3>
+
+<ul>
+<li>8 second heartbeat (periodic check-ins let you know if the chip is still alive and kicking).</li>
+<li>Low power: Properly configured, all components use very little power until woken up either by the heartbeat check-in or by physical intervention (motion/test button).</li>
+<li>Can be programmed using the familiar <a href="http://hlt.media.mit.edu/?p=1695">Arduino environment</a>
+</li>
+</ul><h3>Power</h3>
+
+<p>With a 1300mAh LiPoly battery (upped to 5v by a MintyBoost), TinyMotion might stay on
+for about 113.45 days, or just around 3.72 months. Real world conditions 
+cause all sorts of degradation in run time. Expect (conservatively) that TinyMotion will
+last you a few weeks at best. (No promises!)</p>
+
+<p>For more information about power usage, fuses, clock and pin connections check out the 
+<a href="https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino">source</a>.</p>
+
+<h3>Building on your breadboard</h3>
+
+<p>To build your own TinyMotion, get all the parts from the parts list and hook everything
+up as like <a href="https://github.com/davidk/TinyMotion/raw/master/breadboard.png">this</a>.</p>
+
+<p>Be sure the set the PIR to 'L'. By default it is set to 'H'.</p>
+
+<p>For a wiring diagram, there is a crude schematic <a href="https://github.com/davidk/TinyMotion/raw/master/schematic.png">here</a>.</p>
+
+<h3>Parts list</h3>
+
+<p>The following parts are needed to build up a working TinyMotion implementation.</p>
+
+<ul>
+<li><a href="http://www.mouser.com/ProductDetail/Atmel/ATtiny85-20PU/?qs=8jWQYweyg6NCiiaOb5GI9Q%3d%3d">ATTiny85</a></li>
+<li><a href="http://www.adafruit.com/products/189">PIR sensor</a></li>
+<li><a href="http://search.digikey.com/scripts/dksearch/dksus.dll?vendor=0&amp;keywords=3M5461-ND">2x4 DIP socket</a></li>
+<li><a href="https://www.adafruit.com/products/400">Header</a></li>
+<li><a href="https://www.adafruit.com/products/266">Female-Female jumper wiring</a></li>
+<li>2x <a href="https://www.adafruit.com/products/126">XBee adapter kit</a>
+</li>
+<li>2x <a href="https://www.adafruit.com/products/128">XBee series 1</a><br>
+</li>
+<li><a href="https://www.adafruit.com/products/589">Protoboard</a></li>
+<li><a href="https://www.adafruit.com/products/724">Screw terminal</a></li>
+<li><a href="https://www.adafruit.com/products/779">3mm Green LED</a></li>
+<li><a href="https://www.adafruit.com/products/367">Switch button</a></li>
+<li>1x330 ohm (LED), 1x10k ohm (switch pull-down), 1x100ohm (switch-pin buffer) resistors</li>
+<li><a href="https://www.adafruit.com/products/14">5v power source</a></li>
+<li>Arduino (you will need a 10uF cap for the reset line) or other AVR programmer</li>
+</ul><h3>Programming</h3>
+
+<h4>If using Arduino</h4>
+
+<p>Follow these instructions to setup the <a href="http://hlt.media.mit.edu/?p=1695">Arduino environment</a> so that your ATTiny85 chip can be programmed. Be sure (and its super important!) to burn the 8MHz bootloader onto your ATTiny85. This is required for SoftwareSerial to work. Otherwise all the data coming through on the remote end will be gibberish, or blank.</p>
+
+<p>To program, copy the <a href="https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino">TinyMotion.ino</a>'s file contents into a new sketch and just upload it.</p>
+
+<h4>Dedicated AVR programmer</h4>
+
+<p>Use the <a href="https://github.com/davidk/TinyMotion/raw/master/TinyMotion.hex">TinyMotion.hex</a> file to upload. Be sure to burn your fuses to enable the 8Mhz clock and other features. </p>
+
+<p>The fuse settings can be found at the top of the source file <a href="https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino">here</a>.</p>
+
+<h3>Notes on XBee</h3>
+
+<p>Pin hibernate must be enabled (<strong>only</strong>) on the TinyMotion's XBee to save power. 
+Under <code>Sleep Modes (NonBeacon)</code> in X-CTU, select <code>1 - PIN HIBERNATE</code> in 
+the <code>(0) SM - Sleep Mode</code> category. Click 'Write' to finalize the change.</p>
+
+<p>If this is your first time setting up an XBee, try Adafruit's helpful guide 
+which walks you through the setup process. It can be found <a href="http://www.ladyada.net/make/xbee/configure.html">here</a>.</p>
+
+<p>The ATtiny chip will wake up the XBee when it needs to transmit data by changing the DTR pin.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/davidk">davidk</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>

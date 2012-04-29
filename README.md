@@ -11,7 +11,7 @@ A battery powered, remote motion sensor.
 
 ### Power
 
-With a 1300mAh LiPoly battery (upped to 5v by a MintyBoost), TinyMotion could possibly stay on
+With a 1300mAh LiPoly battery (upped to 5v by a MintyBoost), TinyMotion might stay on
 for about 113.45 days, or just around 3.72 months. Real world conditions 
 cause all sorts of degradation in run time. Expect (conservatively) that TinyMotion will
 last you a few weeks at best. (No promises!)
@@ -19,14 +19,14 @@ last you a few weeks at best. (No promises!)
 For more information about power usage, fuses, clock and pin connections check out the 
 [source](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino).
 
-For a wiring diagram, there is a crude schematic [here](https://github.com/davidk/TinyMotion/raw/master/schematic.png).
-
 ### Building on your breadboard
 
 To build your own TinyMotion, get all the parts from the parts list and hook everything
 up as like [this](https://github.com/davidk/TinyMotion/raw/master/breadboard.png).
 
 Be sure the set the PIR to 'L'. By default it is set to 'H'.
+
+For a wiring diagram, there is a crude schematic [here](https://github.com/davidk/TinyMotion/raw/master/schematic.png).
 
 ### Parts list
 
@@ -49,13 +49,13 @@ The following parts are needed to build up a working TinyMotion implementation.
 
 ### Programming
 
-If using Arduino:
+#### If using Arduino
 
 Follow these instructions to setup the [Arduino environment](http://hlt.media.mit.edu/?p=1695) so that your ATTiny85 chip can be programmed. Be sure (and its super important!) to burn the 8MHz bootloader onto your ATTiny85. This is required for SoftwareSerial to work. Otherwise all the data coming through on the remote end will be gibberish, or blank.
 
-To program, copy the TinyMotion.ino file's contents into a new sketch and just upload it.
+To program, copy the [TinyMotion.ino](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino)'s file contents into a new sketch and just upload it.
 
-Dedicated AVR programmer:
+#### Dedicated AVR programmer
 
 Use the [TinyMotion.hex](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.hex) file to upload. Be sure to burn your fuses to enable the 8Mhz clock and other features. 
 
@@ -63,8 +63,11 @@ The fuse settings can be found at the top of the source file [here](https://gith
 
 ### Notes on XBee
 
-Pin hibernate must be enabled on the XBee to see any real power savings, as it is the largest consumer of power in the project. Under power options in X-CTU, enable `Pin Hibernate`. 
+Pin hibernate must be enabled (**only**) on the TinyMotion's XBee to save power. 
+Under `Sleep Modes (NonBeacon)` in X-CTU, select `1 - PIN HIBERNATE` in 
+the `(0) SM - Sleep Mode` category. Click 'Write' to finalize the change.
 
-If this is your first time setting up an XBee, try Adafruit's helpful guide which walks you through the setup process. It can be found [here](http://www.ladyada.net/make/xbee/configure.html).
+If this is your first time setting up an XBee, try Adafruit's helpful guide 
+which walks you through the setup process. It can be found [here](http://www.ladyada.net/make/xbee/configure.html).
 
-The ATtiny chip will wake up the XBee when it needs to transmit data by pulling on the DTR pin.
+The ATtiny chip will wake up the XBee when it needs to transmit data by changing the DTR pin.

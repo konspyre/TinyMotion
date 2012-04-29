@@ -19,10 +19,12 @@ last you a few weeks at best. (No promises!)
 Here are some stats:
 
 Idle power: ~0.06mA
+
 Wake up (every 8 seconds or when motion is detected/button is pressed): ~50mA (approximate)
+
 Wake-ups per hour: 450
-Vcc: 5v (running at a lower voltage will reduce power consumption, but requires bypassing the regulator on
-the PIR sensor)
+
+Vcc: 5v (running at a lower voltage will reduce power consumption, but requires bypassing the regulator on the PIR sensor)
 
 For more information about power usage, fuses, clock and pin connections check out the 
 [source](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino).

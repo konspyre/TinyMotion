@@ -7,7 +7,7 @@ A battery powered, remote motion sensor.
 
 * 8 second heartbeat (periodic check-ins let you know if the chip is still alive and kicking).
 * Low power: Properly configured, all components use very little power until woken up either by the heartbeat check-in or by physical intervention (motion/test button).
-* Can be programmed using the familiar [Arduino environment](http://hlt.media.mit.edu/?p=1695)
+* Can be programmed using the familiar [Arduino environment](http://hlt.media.mit.edu/?p=1695).
 
 ### Power
 
@@ -15,6 +15,14 @@ With a 1300mAh LiPoly battery (upped to 5v by a MintyBoost), TinyMotion might st
 for about 113.45 days, or just around 3.72 months. Real world conditions 
 cause all sorts of degradation in run time. Expect (conservatively) that TinyMotion will
 last you a few weeks at best. (No promises!)
+
+Here are some stats:
+
+Idle power: ~0.06mA
+Wake up (every 8 seconds or when motion is detected/button is pressed): ~50mA (approximate)
+Wake-ups per hour: 450
+Vcc: 5v (running at a lower voltage will reduce power consumption, but requires bypassing the regulator on
+the PIR sensor)
 
 For more information about power usage, fuses, clock and pin connections check out the 
 [source](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino).

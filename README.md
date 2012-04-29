@@ -1,28 +1,36 @@
 TinyMotion
 ==========
 
-A homebrew, remote motion detector that tries to slowly sip power.
-
-### Goals and motivations
-
-TinyMotion was designed out of parts lying around; mostly out of a desire to use
-some protoboard and play with AVR power saving features.
-
-After much nightly wrangling the source and schematic are now up for anybody else
-to learn from (which probably include mistakes).
+A battery powered, remote motion sensor.
 
 ### Features
 
-* Remote motion monitoring with 8 second heartbeat (using the watchdog timer) 
-* Power saving sleep: Both XBee (w/pin hibernate) and ATTiny85 can sleep when there is nothing to do
-* Chip can be programmed using the familiar [Arduino environment](http://hlt.media.mit.edu/?p=1695)
+* 8 second heartbeat (periodic check-ins let you know if the chip is still alive and kicking).
+* Low power: Properly configured, all components use very little power until woken up either by the heartbeat check-in or by physical intervention (motion/test button).
+* Can be programmed using the familiar [Arduino environment](http://hlt.media.mit.edu/?p=1695)
+
+### Power
+
+With a 1300mAh LiPoly battery (upped to 5v by a MintyBoost), TinyMotion could possibly stay on
+for about 113.45 days, or just around 3.72 months. Real world conditions 
+cause all sorts of degradation in run time. Expect (conservatively) that TinyMotion will
+last you a few weeks at best. (No promises!)
 
 For more information about power usage, fuses, clock and pin connections check out the 
-[source](https://github.com/davidk/TinyMotion/blob/master/TinyMotion.ino).
+[source](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino).
 
 For a wiring diagram, there is a crude schematic [here](https://github.com/davidk/TinyMotion/raw/master/schematic.png).
 
+### Building on your breadboard
+
+To build your own TinyMotion, get all the parts from the parts list and hook everything
+up as like [this](https://github.com/davidk/TinyMotion/raw/master/breadboard.png).
+
+Be sure the set the PIR to 'L'. By default it is set to 'H'.
+
 ### Parts list
+
+The following parts are needed to build up a working TinyMotion implementation.
 
 * [ATTiny85](http://www.mouser.com/ProductDetail/Atmel/ATtiny85-20PU/?qs=8jWQYweyg6NCiiaOb5GI9Q%3d%3d)
 * [PIR sensor](http://www.adafruit.com/products/189)
@@ -37,9 +45,26 @@ For a wiring diagram, there is a crude schematic [here](https://github.com/david
 * [Switch button](https://www.adafruit.com/products/367)
 * 1x330 ohm (LED), 1x10k ohm (switch pull-down), 1x100ohm (switch-pin buffer) resistors
 * [5v power source](https://www.adafruit.com/products/14)
+* Arduino (you will need a 10uF cap for the reset line) or other AVR programmer
+
+### Programming
+
+If using Arduino:
+
+Follow these instructions to setup the [Arduino environment](http://hlt.media.mit.edu/?p=1695) so that your ATTiny85 chip can be programmed. Be sure (and its super important!) to burn the 8MHz bootloader onto your ATTiny85. This is required for SoftwareSerial to work. Otherwise all the data coming through on the remote end will be gibberish, or blank.
+
+To program, copy the TinyMotion.ino file's contents into a new sketch and just upload it.
+
+Dedicated AVR programmer:
+
+Use the [TinyMotion.hex](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.hex) file to upload. Be sure to burn your fuses to enable the 8Mhz clock and other features. 
+
+The fuse settings can be found at the top of the source file [here](https://github.com/davidk/TinyMotion/raw/master/TinyMotion.ino).
 
 ### Notes on XBee
 
-Pin hibernate must be enabled on the XBee to realize real power savings, as it is the largest
-consumer of power in the project. Under power options in X-CTU, enable `Pin Hibernate`. The
-ATtiny chip will wake up the XBee when it needs to transmit data.
+Pin hibernate must be enabled on the XBee to see any real power savings, as it is the largest consumer of power in the project. Under power options in X-CTU, enable `Pin Hibernate`. 
+
+If this is your first time setting up an XBee, try Adafruit's helpful guide which walks you through the setup process. It can be found [here](http://www.ladyada.net/make/xbee/configure.html).
+
+The ATtiny chip will wake up the XBee when it needs to transmit data by pulling on the DTR pin.

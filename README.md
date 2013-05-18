@@ -4,7 +4,7 @@ TinyMotion
 A battery powered, remote motion sensor.
 
 Note: A PCB version of TinyMotion is being planned, but feel free to make your own if you wish! (After all,
-the PCB might end up running out of bubblegum -- forever)
+the PCB might take awhile.)
 
 ### Features
 
